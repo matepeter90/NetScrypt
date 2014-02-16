@@ -2,8 +2,9 @@
 <package >
   <metadata>
     <id>BlackFox.Cryptography.NetScrypt</id>
+    <title>NetScrypt, scrypt for .Net</title>
     <version>1.0.0</version>
-    <authors>Julien Roncaglia</authors>
+    <authors>Julien Roncaglia, Replicon Inc, Colin Percival</authors>
     <owners>Julien Roncaglia</owners>
     <licenseUrl>https://raw.github.com/vbfox/NetScrypt/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/vbfox/NetScrypt</projectUrl>
