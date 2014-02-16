@@ -3,43 +3,42 @@
     using System;
     using System.IO;
     using System.Security;
+    using BlackFox.Cryptography.NetScrypt.Scrypt.ScryptCommandLine;
 
     class Program
     {
         static void Main(string[] args)
         {
-            var hash = NetScrypt.HashPassword("Hello world");
-            Console.WriteLine(hash);
-            Console.WriteLine(NetScrypt.Verify("Hello world", hash));
-            Console.WriteLine(NetScrypt.Verify("Hello_world", hash));
-            //Measure();
+            string verb;
+            var parsedArgs = ScryptCommandLineArgs.Parse(args, out verb);
 
-            long maxmem = 1024;
-            double maxmemfrac = 0.125;
-            TimeSpan maxtime = TimeSpan.FromSeconds(5);
-            /*
-            long n;
-            int r;
-            int p;
-            ParameterSelection.PickParameters(maxmem, maxmemfrac, maxtime, out n, out r, out p);
-            Console.WriteLine("N = {0} r = {1} p = {2}", n, r, p);
-            */
-
-            Console.Write("Please enter passphrase: ");
-            var password = ReadPassword();
-
-            Console.WriteLine();
-            Console.WriteLine("Encrypting file...");
-            using(var input = new FileStream(@"E:\temp\HelloWorld.txt", FileMode.Open))
-            using (var output = new FileStream(@"E:\temp\HelloWorld.txt.scrypt", FileMode.Create))
+            if (verb == "enc")
             {
-                var encryption = new ScryptEncryption(password, maxmem, maxmemfrac, maxtime);
-                encryption.Encrypt(input, output);
-            }
+                var encryptParams = parsedArgs.EncryptVerb;
 
-            //Console.WriteLine("salsa20/8 core per seconds: {0}", ComputeCoresPerSecond());
-            Console.WriteLine("Done.");
-            Console.ReadLine();
+                Console.Write("Please enter passphrase: ");
+                var password = ReadPassword();
+                //TODO: Ask password twice
+
+                Console.WriteLine();
+                Console.WriteLine("Encrypting file...");
+
+                var encryption = new ScryptEncryption(password, encryptParams.MaxMemoryBytes, encryptParams.MaxMemoryPercentage,
+                    TimeSpan.FromSeconds(encryptParams.MaxTimeSeconds));
+
+                using (var input = new FileStream(encryptParams.InputFile, FileMode.Open))
+                using (var output = new FileStream(encryptParams.OutputFile, FileMode.Create))
+                {
+                    encryption.Encrypt(input, output);
+                }
+
+                Console.WriteLine("Done.");
+                Console.ReadLine();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         static SecureString ReadPassword()
