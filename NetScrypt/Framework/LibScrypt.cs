@@ -5,7 +5,7 @@
     using System.Runtime.InteropServices;
     using System.Security;
 
-    internal static class LibScrypt
+    public static class LibScrypt
     {
         static readonly IScryptDllImport dllImport;
         static LibScrypt()
@@ -28,18 +28,24 @@
         private static unsafe byte[] Scrypt(IntPtr password, int passwordLength, byte[] salt, ulong n, uint r, uint p,
             uint derivedKeyLengthBytes)
         {
-            var saltLength = salt.Length;
-            if (saltLength == 0) salt = pseudoEmptyBytes;
+            var saltLength = salt != null ? salt.Length : 0;
+            var saltNotNullOrEmpty = salt == null || saltLength == 0 ? pseudoEmptyBytes : salt;
 
             var derivedKey = (derivedKeyLengthBytes == 0) ? pseudoEmptyBytes : new byte[derivedKeyLengthBytes];
 
-            fixed (byte* saltPtr = &salt[0])
+            fixed (byte* saltPtr = &saltNotNullOrEmpty[0])
             fixed (byte* derivedKeyPtr = &derivedKey[0])
             {
-                var scryptResult = dllImport.Scrypt(password, new UIntPtr((uint)passwordLength),
-                    new IntPtr(saltPtr), new UIntPtr((uint)saltLength),
-                    n, r, p,
-                    new IntPtr(derivedKeyPtr), new UIntPtr(derivedKeyLengthBytes));
+                var scryptResult = dllImport.Scrypt(
+                    password,
+                    new UIntPtr((uint)passwordLength),
+                    saltLength > 0 ? new IntPtr(saltPtr) : IntPtr.Zero,
+                    new UIntPtr((uint)saltLength),
+                    n,
+                    r,
+                    p,
+                    derivedKeyLengthBytes > 0 ? new IntPtr(derivedKeyPtr) : IntPtr.Zero,
+                    new UIntPtr(derivedKeyLengthBytes));
 
                 if (scryptResult != 0)
                 {
@@ -55,12 +61,19 @@
         public unsafe static byte[] Scrypt(byte[] password, byte[] salt, ulong n, uint r, uint p,
             uint derivedKeyLengthBytes)
         {
-            var passwordLength = password.Length;
-            if (passwordLength == 0) password = pseudoEmptyBytes;
+            var passwordLength = password != null ? password.Length : 0;
+            var passwordNotNullOrEmpty = password == null || passwordLength == 0 ? pseudoEmptyBytes : password;
 
-            fixed (byte* passwordPtr = &password[0])
+            fixed (byte* passwordPtr = &passwordNotNullOrEmpty[0])
             {
-                return Scrypt(new IntPtr(passwordPtr), passwordLength, salt, n, r, p, derivedKeyLengthBytes);
+                return Scrypt(
+                    passwordLength > 0 ? new IntPtr(passwordPtr) : IntPtr.Zero,
+                    passwordLength,
+                    salt,
+                    n,
+                    r,
+                    p,
+                    derivedKeyLengthBytes);
             }
         }
 

@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Text;
     using System.Threading.Tasks;
+    using BlackFox.Cryptography.NetScrypt.Framework;
 
     class Program
     {
@@ -13,7 +14,19 @@
             Console.WriteLine(hash);
             Console.WriteLine(NetScrypt.Verify("Hello world", hash));
             Console.WriteLine(NetScrypt.Verify("Hello_world", hash));
-            Measure();
+            //Measure();
+
+            long maxmem = 0;
+            double maxmemfrac = 0.125;
+            TimeSpan maxtime = TimeSpan.FromSeconds(5);
+
+            long n;
+            int r;
+            int p;
+            ParameterSelection.PickParameters(maxmem, maxmemfrac, maxtime, out n, out r, out p);
+            Console.WriteLine("N = {0} r = {1} p = {2}", n, r, p);
+
+            //Console.WriteLine("salsa20/8 core per seconds: {0}", ComputeCoresPerSecond());
             Console.ReadLine();
         }
 
