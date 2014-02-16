@@ -6,6 +6,7 @@
     <version>1.0.0</version>
     <authors>Julien Roncaglia, Replicon Inc, Colin Percival</authors>
     <owners>Julien Roncaglia</owners>
+    <iconUrl>https://raw.github.com/vbfox/NetScrypt/master/NetScrypt.png</iconUrl>
     <licenseUrl>https://raw.github.com/vbfox/NetScrypt/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/vbfox/NetScrypt</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
