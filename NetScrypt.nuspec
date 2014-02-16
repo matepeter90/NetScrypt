@@ -22,10 +22,10 @@
     <file src="libscrypt\Release\Win32\libscrypt-win32.dll" target="lib\net20" />
     <file src="libscrypt\Release\x64\libscrypt-x64.dll" target="lib\net20" />
     
-    <file src="BlackFox.Cryptography.NetScrypt\bin\Release\BlackFox.Cryptography.NetScrypt.dll" target="lib\net20" />
+    <file src="NetScrypt\bin\Release\BlackFox.Cryptography.NetScrypt.dll" target="lib\net20" />
     
-    <file src="BlackFox.Cryptography.NetScrypt\install.ps1" target="tools" />
-    <file src="BlackFox.Cryptography.NetScrypt\uninstall.ps1" target="tools" />
-    <file src="BlackFox.Cryptography.NetScrypt\BlackFox.Cryptography.NetScrypt.targets" target="tools" />
+    <file src="NetScrypt\install.ps1" target="tools" />
+    <file src="NetScrypt\uninstall.ps1" target="tools" />
+    <file src="NetScrypt\BlackFox.Cryptography.NetScrypt.targets" target="tools" />
   </files>
 </package>
