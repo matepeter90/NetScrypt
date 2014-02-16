@@ -77,7 +77,7 @@
             }
         }
 
-        public static byte[] Scrypt(SecureString password, byte[] salt, ulong n, uint r, uint p,
+        public static byte[] ScryptUnicode(SecureString password, byte[] salt, ulong n, uint r, uint p,
             uint derivedKeyLengthBytes)
         {
             var passwordPtr = IntPtr.Zero;
@@ -91,6 +91,23 @@
             finally
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(passwordPtr);
+            }
+        }
+
+        public static byte[] ScryptAnsi(SecureString password, byte[] salt, ulong n, uint r, uint p,
+            uint derivedKeyLengthBytes)
+        {
+            var passwordPtr = IntPtr.Zero;
+
+            RuntimeHelpers.PrepareConstrainedRegions();
+            try
+            {
+                passwordPtr = Marshal.SecureStringToGlobalAllocAnsi(password);
+                return Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKeyLengthBytes);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocAnsi(passwordPtr);
             }
         }
     }

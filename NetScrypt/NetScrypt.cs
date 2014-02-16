@@ -70,7 +70,7 @@ namespace BlackFox.Cryptography.NetScrypt
         /// <remarks>The encoding used is the system Unicode encoding (UTF-16)</remarks>
         public static byte[] DeriveKey(SecureString password, SaltWithParameters saltWithParameters)
         {
-            return LibScrypt.Scrypt(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
+            return LibScrypt.ScryptUnicode(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
                 saltWithParameters.Parameters.R, saltWithParameters.Parameters.P,
                 saltWithParameters.Parameters.HashLengthBytes);
         }

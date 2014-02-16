@@ -15,7 +15,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
             n = 1L << logN;
         }
 
-        static void PickParametersCore(long maxMemory, double maxMemoryPercentage, double maxTime, out int logN, out int r, out int p)
+        public static void PickParametersCore(long maxMemory, double maxMemoryPercentage, double maxTime, out int logN, out int r, out int p)
         {
             double maxN;
 
