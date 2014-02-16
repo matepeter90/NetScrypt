@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BlackFox.Cryptography.NetScrypt</id>
+    <version>1.0.0</version>
+    <authors>Julien Roncaglia</authors>
+    <owners>Julien Roncaglia</owners>
+    <licenseUrl>https://raw.github.com/vbfox/NetScrypt/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/vbfox/NetScrypt</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>scrypt key-derivation function as a .Net assembly calling a plain-C dll</description>
+    <releaseNotes>First NuGet release.</releaseNotes>
+    <copyright>Copyright Julien Roncaglia 2014</copyright>
+    <tags>Cryptography scrypt</tags>
+    
+    <references>
+      <reference file="BlackFox.Cryptography.NetScrypt.dll" />
+    </references>     
+  </metadata>
+  
+  <files>
+    <file src="libscrypt\Release\Win32\libscrypt-win32.dll" target="lib\net20" />
+    <file src="libscrypt\Release\x64\libscrypt-x64.dll" target="lib\net20" />
+    
+    <file src="BlackFox.Cryptography.NetScrypt\bin\Release\BlackFox.Cryptography.NetScrypt.dll" target="lib\net20" />
+    
+    <file src="BlackFox.Cryptography.NetScrypt\install.ps1" target="tools" />
+    <file src="BlackFox.Cryptography.NetScrypt\uninstall.ps1" target="tools" />
+    <file src="BlackFox.Cryptography.NetScrypt\BlackFox.Cryptography.NetScrypt.targets" target="tools" />
+  </files>
+</package>
