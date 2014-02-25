@@ -2,8 +2,12 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Security.Cryptography;
 
+    /// <summary>
+    /// Implement the variant of AES in CTR mode that the scrypt sample application uses.
+    /// </summary>
     class ScryptAesCtr
     {
         readonly long nonce;
@@ -14,11 +18,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 
         public ScryptAesCtr(byte[] key, long nonce)
         {
-            var iv = new byte[16];
-            for (int i = 0; i < 16; i++)
-            {
-                iv[i] = 0;
-            }
+            if (key == null) throw new ArgumentNullException("key");
 
             aes = Aes.Create();
             if (aes == null)
@@ -28,7 +28,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 
             aes.KeySize = 256;
             aes.Key = key;
-            aes.IV = iv;
+            aes.IV = Enumerable.Repeat((byte)0, 16).ToArray();
             aes.Mode = CipherMode.ECB;
             aes.Padding = PaddingMode.None;
 
@@ -37,6 +37,9 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 
         public void EncryptOrDectrypt(Stream input, Stream output)
         {
+            if (input == null) throw new ArgumentNullException("input");
+            if (output == null) throw new ArgumentNullException("output");
+
             var pblk = new byte[16];
 
             ICryptoTransform aesEncryptor = aes.CreateEncryptor();

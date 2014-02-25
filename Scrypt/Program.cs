@@ -2,8 +2,9 @@
 {
     using System;
     using System.IO;
-    using System.Security;
     using BlackFox.Cryptography.NetScrypt.Scrypt.ScryptCommandLine;
+    using CommandLine;
+    using CommandLine.Text;
 
     class Program
     {
@@ -14,26 +15,11 @@
 
             if (verb == "enc")
             {
-                var encryptParams = parsedArgs.EncryptVerb;
-
-                Console.Write("Please enter passphrase: ");
-                var password = ReadPassword();
-                //TODO: Ask password twice
-
-                Console.WriteLine();
-                Console.WriteLine("Encrypting file...");
-
-                var encryption = new ScryptEncryption(password, encryptParams.MaxMemoryBytes, encryptParams.MaxMemoryPercentage,
-                    TimeSpan.FromSeconds(encryptParams.MaxTimeSeconds));
-
-                using (var input = new FileStream(encryptParams.InputFile, FileMode.Open))
-                using (var output = new FileStream(encryptParams.OutputFile, FileMode.Create))
-                {
-                    encryption.Encrypt(input, output);
-                }
-
-                Console.WriteLine("Done.");
-                Console.ReadLine();
+                Encrypt(parsedArgs);
+            }
+            else if (verb == "help")
+            {
+                Help(parsedArgs);
             }
             else
             {
@@ -41,25 +27,40 @@
             }
         }
 
-        static SecureString ReadPassword()
+        static void Help(ScryptCommandLineArgs parsedArgs)
         {
-            while (Console.KeyAvailable)
+            var helpParams = parsedArgs.HelpVerb;
+            var helpText = string.IsNullOrEmpty(helpParams.Verb)
+                ? HelpText.AutoBuild(parsedArgs, _ => { }, true)
+                : HelpText.AutoBuild(parsedArgs, helpParams.Verb);
+
+            Console.WriteLine(helpText);
+        }
+
+        static void Encrypt(ScryptCommandLineArgs parsedArgs)
+        {
+            var encryptParams = parsedArgs.EncryptVerb;
+
+            if (string.IsNullOrEmpty(encryptParams.InputFile) || string.IsNullOrEmpty(encryptParams.OutputFile))
             {
-                Console.ReadKey(true);
+                Console.WriteLine(HelpText.AutoBuild(parsedArgs, "enc"));
+                Environment.Exit(Parser.DefaultExitCodeFail);
             }
 
-            var result = new SecureString();
-            do
+            using (var input = ConsoleUtils.OpenStreamOrExit(encryptParams.InputFile, FileMode.Open, FileAccess.Read, "Cannot open input file"))
+            using (var output = ConsoleUtils.OpenStreamOrExit(encryptParams.OutputFile, FileMode.Create, FileAccess.ReadWrite, "Cannot open output file"))
             {
-                var key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    break;
-                }
-                result.AppendChar(key.KeyChar);
-            } while (true);
+                var password = ConsoleUtils.ReadPasswords("Please enter passphrase: ", "Please confirm passphrase: ");
 
-            return result;
+                Console.WriteLine();
+                Console.WriteLine("Encrypting file...");
+
+                var encryption = new ScryptEncryption(password, encryptParams.MaxMemoryBytes,
+                    encryptParams.MaxMemoryPercentage,
+                    TimeSpan.FromSeconds(encryptParams.MaxTimeSeconds));
+
+                encryption.Encrypt(input, output);
+            }
         }
     }
 }

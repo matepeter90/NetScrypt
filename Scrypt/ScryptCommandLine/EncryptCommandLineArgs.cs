@@ -16,14 +16,10 @@
             HelpText = "Use at most maxtime seconds of CPU time to compute the derived encryption key.")]
         public double MaxTimeSeconds { get; set; }
 
-        [
-            ValueOption(0)
-        ]
+        [ValueOption(0)]
         public string InputFile { get; set; }
 
-        [
-            ValueOption(1)
-        ]
+        [ValueOption(0)]
         public string OutputFile { get; set; }
     }
 }

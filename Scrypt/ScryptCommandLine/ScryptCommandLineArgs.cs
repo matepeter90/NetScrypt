@@ -15,24 +15,38 @@
                                       + "encryption key.")]
         public DecryptCommandLineArgs DecryptVerb { get; set; }
 
-        [HelpVerbOption]
-        public string GetUsage(string verb)
+        [VerbOption("help", HelpText = "Get help for the command line, follow by 'enc' or 'dec' to know their options.")]
+        public HelpCommandLineArgs HelpVerb { get; set; }
+
+        public ScryptCommandLineArgs()
         {
-            return HelpText.AutoBuild(this, verb);
+            EncryptVerb = new EncryptCommandLineArgs();
+            DecryptVerb = new DecryptCommandLineArgs();
+            HelpVerb = new HelpCommandLineArgs();
         }
 
         public static ScryptCommandLineArgs Parse(string[] args, out string verb)
         {
+            if (args.Length == 0)
+            {
+                // Work around a bug in CommandLineParser that doesn't correctly support a custom 'help' verb.
+                Console.WriteLine(HelpText.AutoBuild(new ScryptCommandLineArgs(), _ => { }, true));
+                Environment.Exit(Parser.DefaultExitCodeFail);
+            }
+
             string verbForClosure = null;
 
             var arguments = new ScryptCommandLineArgs();
-            if (!Parser.Default.ParseArguments(args, arguments,
+            var parser = new Parser(settings => { settings.HelpWriter = null; });
+
+            var parseSucceed = parser.ParseArguments(args, arguments,
                 (foundVerb, subOptions) =>
                 {
                     verbForClosure = foundVerb;
-                }))
+                });
+            if (!parseSucceed)
             {
-                Console.WriteLine(HelpText.AutoBuild(arguments));
+                Console.WriteLine(HelpText.AutoBuild(arguments, _ => { }, true));
                 Environment.Exit(Parser.DefaultExitCodeFail);
             }
 
