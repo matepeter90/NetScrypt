@@ -19,7 +19,7 @@
         [ValueOption(0)]
         public string InputFile { get; set; }
 
-        [ValueOption(0)]
+        [ValueOption(1)]
         public string OutputFile { get; set; }
     }
 }

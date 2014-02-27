@@ -5,7 +5,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
     using System.Diagnostics;
     using BlackFox.Cryptography.NetScrypt.Framework;
 
-    class ParameterSelection
+    static class ParameterSelection
     {
         public static void PickParameters(long maxMemory, double maxMemoryPercentage, TimeSpan maxTime, out long n, out int r,
             out int p)
@@ -92,6 +92,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 #endif
 
             /* Only use the specified fraction of the available memory. */
+
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if ((maxMemoryPercentage > 0.5) || (maxMemoryPercentage == 0.0))
             {
@@ -156,6 +157,40 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
 
             /* We can do approximately i salsa20/8 cores per diffd seconds. */
             return i / diffd;
+        }
+
+        public static void CheckParameters(long maxMemory, double maxMemoryPercentage, double maxTime, int logN,
+            int r, int p)
+        {
+            /* Figure out the maximum amount of memory we can use. */
+            long memlimit = GetMemoryToUseInBytes(maxMemory, maxMemoryPercentage);
+
+            /* Figure out how fast the CPU is. */
+            double opps = ComputeCoresPerSecond();
+            double opslimit = opps * maxTime;
+
+            /* Sanity-check values. */
+            if ((logN < 1) || (logN > 63))
+            {
+                throw new NoValidScryptBlockException("logN is out of range");
+            }
+            if ((long)r * p >= 0x40000000)
+            {
+                throw new NoValidScryptBlockException("p*r is too big");
+            }
+
+            /* Check limits. */
+            var n = (long)(1) << logN;
+            if ((memlimit/n)/r < 128)
+            {
+                throw new DecriptingRequireTooMuchMemoryException();
+            }
+            if ((opslimit/n)/(r*p) < 4)
+            {
+                throw new DecriptingRequireTooMuchCpuException();
+            }
+
+            /* Success! */
         }
     }
 }

@@ -17,6 +17,10 @@
             {
                 Encrypt(parsedArgs);
             }
+            else if (verb == "dec")
+            {
+                Decrypt(parsedArgs);
+            }
             else if (verb == "help")
             {
                 Help(parsedArgs);
@@ -37,6 +41,31 @@
             Console.WriteLine(helpText);
         }
 
+        static void Decrypt(ScryptCommandLineArgs parsedArgs)
+        {
+            var encryptParams = parsedArgs.DecryptVerb;
+
+            if (string.IsNullOrEmpty(encryptParams.InputFile) || string.IsNullOrEmpty(encryptParams.OutputFile))
+            {
+                Console.WriteLine(HelpText.AutoBuild(parsedArgs, "dec"));
+                Environment.Exit(Parser.DefaultExitCodeFail);
+            }
+
+            using (var input = ConsoleUtils.OpenStreamOrExit(encryptParams.InputFile, FileMode.Open, FileAccess.Read, "Cannot open input file"))
+            using (var output = ConsoleUtils.OpenStreamOrExit(encryptParams.OutputFile, FileMode.Create, FileAccess.ReadWrite, "Cannot open output file"))
+            {
+                var password = ConsoleUtils.ReadPassword("Please enter passphrase: ");
+
+                Console.WriteLine();
+
+                var encryption = new ScryptEncryption(password, encryptParams.MaxMemoryBytes,
+                    encryptParams.MaxMemoryPercentage,
+                    TimeSpan.FromSeconds(encryptParams.MaxTimeSeconds));
+
+                encryption.Decrypt(input, output);
+            }
+        }
+
         static void Encrypt(ScryptCommandLineArgs parsedArgs)
         {
             var encryptParams = parsedArgs.EncryptVerb;
@@ -53,7 +82,6 @@
                 var password = ConsoleUtils.ReadPasswords("Please enter passphrase: ", "Please confirm passphrase: ");
 
                 Console.WriteLine();
-                Console.WriteLine("Encrypting file...");
 
                 var encryption = new ScryptEncryption(password, encryptParams.MaxMemoryBytes,
                     encryptParams.MaxMemoryPercentage,

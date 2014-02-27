@@ -41,7 +41,7 @@
             return password;
         }
 
-        static SecureString ReadPassword(string prompt)
+        public static SecureString ReadPassword(string prompt)
         {
             Console.Write(prompt);
             var password = ReadPassword();

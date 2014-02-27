@@ -8,7 +8,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
     /// <summary>
     /// Implement the variant of AES in CTR mode that the scrypt sample application uses.
     /// </summary>
-    class ScryptAesCtr
+    class ScryptAesCtr : IDisposable
     {
         readonly long nonce;
         long byteCounter;
@@ -31,7 +31,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
             aes.IV = Enumerable.Repeat((byte)0, 16).ToArray();
             aes.Mode = CipherMode.ECB;
             aes.Padding = PaddingMode.None;
-
+            
             this.nonce = nonce;
         }
 
@@ -68,6 +68,11 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
                 /* Move to the next byte of cipherstream. */
                 byteCounter += 1;
             }
+        }
+
+        public void Dispose()
+        {
+            aes.Dispose();
         }
     }
 }

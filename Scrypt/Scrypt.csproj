@@ -51,6 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Exceptions\DecriptingRequireTooMuchCpuException.cs" />
+    <Compile Include="Exceptions\DecriptingRequireTooMuchMemoryException.cs" />
+    <Compile Include="Exceptions\IncorrectPassphraseException.cs" />
+    <Compile Include="Exceptions\NoValidScryptBlockException.cs" />
     <Compile Include="ScryptCommandLine\DecryptCommandLineArgs.cs" />
     <Compile Include="ScryptCommandLine\EncryptCommandLineArgs.cs" />
     <Compile Include="ParameterSelection.cs" />
