@@ -2,9 +2,9 @@
 {
     using System;
 
-    class DecriptingRequireTooMuchCpuException : Exception
+    class DecryptingRequireTooMuchCpuException : Exception
     {
-        public DecriptingRequireTooMuchCpuException()
+        public DecryptingRequireTooMuchCpuException()
             : base("Decrypting file would take too much CPU time")
         {
 

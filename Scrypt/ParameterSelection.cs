@@ -183,11 +183,11 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
             var n = (long)(1) << logN;
             if ((memlimit/n)/r < 128)
             {
-                throw new DecriptingRequireTooMuchMemoryException();
+                throw new DecryptingRequireTooMuchMemoryException();
             }
             if ((opslimit/n)/(r*p) < 4)
             {
-                throw new DecriptingRequireTooMuchCpuException();
+                throw new DecryptingRequireTooMuchCpuException();
             }
 
             /* Success! */

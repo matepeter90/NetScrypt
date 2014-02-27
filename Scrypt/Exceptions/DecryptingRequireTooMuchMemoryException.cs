@@ -2,9 +2,9 @@
 {
     using System;
 
-    class DecriptingRequireTooMuchMemoryException : Exception
+    class DecryptingRequireTooMuchMemoryException : Exception
     {
-        public DecriptingRequireTooMuchMemoryException()
+        public DecryptingRequireTooMuchMemoryException()
             : base("Decrypting file would require too much memory")
         {
         }

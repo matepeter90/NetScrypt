@@ -241,12 +241,4 @@
             }
         }
     }
-
-    class UnrecognizedFormatVersionException : Exception
-    {
-        public UnrecognizedFormatVersionException()
-            : base("Unrecognized scrypt format version")
-        {
-        }
-    }
 }
