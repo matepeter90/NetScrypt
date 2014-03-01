@@ -1,13 +1,13 @@
 ﻿namespace BlackFox.Cryptography.NetScrypt.Scrypt
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Security;
     using System.Security.Cryptography;
     using System.Text;
     using BlackFox.Cryptography.NetScrypt.Framework;
+    using BlackFox.Cryptography.NetScrypt.Scrypt.Streams;
 
     class ScryptEncryption
     {
@@ -188,7 +188,7 @@
             }
 
             var header = new byte[96];
-            input.Read(header, 0, header.Length); // TODO: Check result & loop
+            input.ReadExactly(header, 0, header.Length);
 
             var marker = header.Take(scryptBytes.Length).ToArray();
             if (!marker.SequenceEqual(scryptBytes))
@@ -227,12 +227,12 @@
                 var hmacKey = new byte[32];
                 Array.Copy(dk, 32, hmacKey, 0, 32);
                 var hmacSha256 = new HMACSHA256(hmacKey);
-                input.Position = 0;
-                var inputArray = StreamToArray(input); // TODO: Create a virtual stream over the input
-                var computedHmac = hmacSha256.ComputeHash(inputArray, 0, inputArray.Length - 32);
+                var inputWithoutSignature = new SubsetStream(input, 0, input.Length - 32);
+                inputWithoutSignature.Position = 0;
+                var computedHmac = hmacSha256.ComputeHash(inputWithoutSignature);
                 input.Position = input.Length - 32;
                 var hmacInFile = new byte[32];
-                input.Read(hmacInFile, 0, 32); // TODO: Check result & loop
+                input.ReadExactly(hmacInFile, 0, 32);
                 if (!hmacInFile.SequenceEqual(computedHmac))
                 {
                     throw new NoValidScryptBlockException("Signature don't verify");
@@ -246,20 +246,6 @@
             }
 
             /* Success! */
-        }
-
-        static byte[] StreamToArray(Stream input)
-        {
-            var buffer = new byte[16 * 1024];
-            using (var ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
         }
     }
 }

@@ -66,6 +66,8 @@
     <Compile Include="ScryptEncryption.cs" />
     <Compile Include="SecureStringUtils.cs" />
     <Compile Include="Exceptions\UnrecognizedFormatVersionException.cs" />
+    <Compile Include="Streams\StreamExtensions.cs" />
+    <Compile Include="Streams\SubsetStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
