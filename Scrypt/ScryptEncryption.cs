@@ -28,7 +28,7 @@
 
         static readonly byte[] scryptBytes = Encoding.ASCII.GetBytes("scrypt");
 
-        private void CreateHeader(out byte[] header, out byte[] dk)
+        private void CreateHeader(out byte[] header, byte[] dk)
         {
             /* Pick values for N, r, p. */
             int r, p, logN;
@@ -39,7 +39,7 @@
             var salt = SaltGenerator.GenerateRandomSalt(32);
 
             /* Generate the derived keys. */
-            dk = LibScrypt.ScryptAnsi(password, salt, (ulong)n, (uint)r, (uint)p, 64);
+            LibScrypt.ScryptAnsi(password, salt, (ulong)n, (uint)r, (uint)p, dk);
 
             /* Construct the file header. */
             header = new byte[96];
@@ -74,32 +74,48 @@
             return bytes;
         }
 
-        public void Encrypt(Stream input, Stream output)
+        const int DERIVED_KEY_SIZE = 64;
+
+        public unsafe void Encrypt(Stream input, Stream output)
         {
             if (input == null) throw new ArgumentNullException("input");
             if (output == null) throw new ArgumentNullException("output");
 
-            /* Generate the header and derived key. */
-            byte[] header, dk;
-            CreateHeader(out header, out dk);
+            var dk = new byte[DERIVED_KEY_SIZE];
 
-            /* Copy header into output buffer. */
-            output.Write(header, 0, header.Length);
+            // ReSharper disable once UnusedVariable
+            // pDk is useless but C# can't pin without creating a pointer
+            fixed (byte* pDk = &dk[0])
+            {
+                /* Generate the header and derived key. */
+                byte[] header;
+                CreateHeader(out header, dk);
 
-            /* Encrypt data. */
-            var aesCtr = new ScryptAesCtr(dk.Take(32).ToArray(), 0);
-            aesCtr.EncryptOrDectrypt(input, output);
+                /* Copy header into output buffer. */
+                output.Write(header, 0, header.Length);
 
-            /* Add signature. */
-            var hmacKey = new byte[32];
-            Array.Copy(dk, 32, hmacKey, 0, 32);
-            var hmacSha256 = new HMACSHA256(hmacKey);
-            output.Position = 0;
-            var headerHmac = hmacSha256.ComputeHash(output);
-            output.Write(headerHmac, 0, 32);
+                /* Encrypt data. */
+                var aesCtr = new ScryptAesCtr(dk.Take(32).ToArray(), 0);
+                aesCtr.EncryptOrDectrypt(input, output);
+
+                /* Add signature. */
+                var hmacKey = new byte[32];
+                Array.Copy(dk, 32, hmacKey, 0, 32);
+            
+                var hmacSha256 = new HMACSHA256(hmacKey);
+                output.Position = 0;
+                var headerHmac = hmacSha256.ComputeHash(output);
+                output.Write(headerHmac, 0, 32);
+
+                /* Zero sensitive data. */
+                for (int i = 0; i < dk.Length; i++)
+                {
+                    dk[i] = 0;
+                }
+            }
         }
 
-        public void ParseAndCheckHeader(byte[] header, out byte[] dk)
+        void ParseAndCheckHeader(byte[] header, byte[] dk)
         {
             /* Parse N, r, p, salt. */
             var logN = (int)header[7];
@@ -128,7 +144,7 @@
 
             /* Compute the derived keys. */
             var n = (long)(1) << logN;
-            dk = LibScrypt.ScryptAnsi(password, salt, (ulong)n, (uint)r, (uint)p, 64);
+            LibScrypt.ScryptAnsi(password, salt, (ulong)n, (uint)r, (uint)p, dk);
 
             /* Check header signature (i.e., verify password). */
             var hmacKey = new byte[32];
@@ -157,7 +173,7 @@
             return BitConverter.ToInt32(buffer, start);
         }
 
-        public void Decrypt(Stream input, Stream output)
+        public unsafe void Decrypt(Stream input, Stream output)
         {
             if (input == null) throw new ArgumentNullException("input");
             if (output == null) throw new ArgumentNullException("output");
@@ -192,42 +208,47 @@
                 throw new NoValidScryptBlockException("File too small");
             }
 
-            /* Parse the header and generate derived keys. */
-            byte[] dk;
-            ParseAndCheckHeader(header, out dk);
+            var dk = new byte[DERIVED_KEY_SIZE];
 
-            /* Decrypt data. */
-            using (var aesCtr = new ScryptAesCtr(dk.Take(32).ToArray(), 0))
+            // ReSharper disable once UnusedVariable
+            // pDk is useless but C# can't pin without creating a pointer
+            fixed (byte* pDk = &dk[0])
             {
-                aesCtr.EncryptOrDectrypt(input, output);
-            }
+                /* Parse the header and generate derived keys. */
+                ParseAndCheckHeader(header, dk);
 
-            /* Verify signature. */
-            var hmacKey = new byte[32];
-            Array.Copy(dk, 32, hmacKey, 0, 32);
-            var hmacSha256 = new HMACSHA256(hmacKey);
-            input.Position = 0;
-            var inputArray = StreamToArray(input); // TODO: Create a virtual stream over the input
-            var computedHmac = hmacSha256.ComputeHash(inputArray, 0, inputArray.Length - 32);
-            input.Position = input.Length - 32;
-            var hmacInFile = new byte[32];
-            input.Read(hmacInFile, 0, 32);// TODO: Check result & loop
-            if (!hmacInFile.SequenceEqual(computedHmac))
-            {
-                throw new NoValidScryptBlockException("Signature don't verify");
-            }
+                /* Decrypt data. */
+                using (var aesCtr = new ScryptAesCtr(dk.Take(32).ToArray(), 0))
+                {
+                    aesCtr.EncryptOrDectrypt(input, output);
+                }
 
-            /* Zero sensitive data. */
-            //TODO: Pretty useless without pinning the array in the first place
-            for (int i = 0; i < dk.Length; i++)
-            {
-                dk[i] = 0;
+                /* Verify signature. */
+                var hmacKey = new byte[32];
+                Array.Copy(dk, 32, hmacKey, 0, 32);
+                var hmacSha256 = new HMACSHA256(hmacKey);
+                input.Position = 0;
+                var inputArray = StreamToArray(input); // TODO: Create a virtual stream over the input
+                var computedHmac = hmacSha256.ComputeHash(inputArray, 0, inputArray.Length - 32);
+                input.Position = input.Length - 32;
+                var hmacInFile = new byte[32];
+                input.Read(hmacInFile, 0, 32); // TODO: Check result & loop
+                if (!hmacInFile.SequenceEqual(computedHmac))
+                {
+                    throw new NoValidScryptBlockException("Signature don't verify");
+                }
+
+                /* Zero sensitive data. */
+                for (int i = 0; i < dk.Length; i++)
+                {
+                    dk[i] = 0;
+                }
             }
 
             /* Success! */
         }
 
-        public static byte[] StreamToArray(Stream input)
+        static byte[] StreamToArray(Stream input)
         {
             var buffer = new byte[16 * 1024];
             using (var ms = new MemoryStream())

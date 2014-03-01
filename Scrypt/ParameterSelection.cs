@@ -140,7 +140,7 @@ namespace BlackFox.Cryptography.NetScrypt.Scrypt
             do
             {
                 /* Do an scrypt. */
-                LibScrypt.Scrypt(null, null, 128, 1, 1, 0);
+                LibScrypt.Scrypt(null, null, 128, 1, 1, null);
 
                 /* We invoked the salsa20/8 core 512 times. */
                 i += 512;

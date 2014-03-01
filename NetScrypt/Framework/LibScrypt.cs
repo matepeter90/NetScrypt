@@ -25,16 +25,17 @@
             }
         }
 
-        private static unsafe byte[] Scrypt(IntPtr password, int passwordLength, byte[] salt, ulong n, uint r, uint p,
-            uint derivedKeyLengthBytes)
+        private static unsafe void Scrypt(IntPtr password, int passwordLength, byte[] salt, ulong n, uint r, uint p,
+            byte[] derivedKey)
         {
             var saltLength = salt != null ? salt.Length : 0;
             var saltNotNullOrEmpty = salt == null || saltLength == 0 ? pseudoEmptyBytes : salt;
 
-            var derivedKey = (derivedKeyLengthBytes == 0) ? pseudoEmptyBytes : new byte[derivedKeyLengthBytes];
+            // Simplify the code by always pinning the array
+            var derivedKeyForPinning = derivedKey ?? pseudoEmptyBytes;
 
             fixed (byte* saltPtr = &saltNotNullOrEmpty[0])
-            fixed (byte* derivedKeyPtr = &derivedKey[0])
+            fixed (byte* derivedKeyPtr = &derivedKeyForPinning[0])
             {
                 var scryptResult = dllImport.Scrypt(
                     password,
@@ -44,41 +45,39 @@
                     n,
                     r,
                     p,
-                    derivedKeyLengthBytes > 0 ? new IntPtr(derivedKeyPtr) : IntPtr.Zero,
-                    new UIntPtr(derivedKeyLengthBytes));
+                    derivedKey != null ? new IntPtr(derivedKeyPtr) : IntPtr.Zero,
+                    derivedKey != null ? new UIntPtr((uint)derivedKey.Length) : UIntPtr.Zero);
 
                 if (scryptResult != 0)
                 {
                     throw new ScryptInternalErrorException();
                 }
             }
-
-            return (derivedKeyLengthBytes == 0) ? new byte[0] : derivedKey;
         }
 
         static readonly byte[] pseudoEmptyBytes = { 0 };
 
-        public unsafe static byte[] Scrypt(byte[] password, byte[] salt, ulong n, uint r, uint p,
-            uint derivedKeyLengthBytes)
+        public unsafe static void Scrypt(byte[] password, byte[] salt, ulong n, uint r, uint p,
+            byte[] derivedKey)
         {
             var passwordLength = password != null ? password.Length : 0;
             var passwordNotNullOrEmpty = password == null || passwordLength == 0 ? pseudoEmptyBytes : password;
 
             fixed (byte* passwordPtr = &passwordNotNullOrEmpty[0])
             {
-                return Scrypt(
+                Scrypt(
                     passwordLength > 0 ? new IntPtr(passwordPtr) : IntPtr.Zero,
                     passwordLength,
                     salt,
                     n,
                     r,
                     p,
-                    derivedKeyLengthBytes);
+                    derivedKey);
             }
         }
 
-        public static byte[] ScryptUnicode(SecureString password, byte[] salt, ulong n, uint r, uint p,
-            uint derivedKeyLengthBytes)
+        public static void ScryptUnicode(SecureString password, byte[] salt, ulong n, uint r, uint p,
+            byte[] derivedKey)
         {
             var passwordPtr = IntPtr.Zero;
 
@@ -86,7 +85,7 @@
             try
             {
                 passwordPtr = Marshal.SecureStringToGlobalAllocUnicode(password);
-                return Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKeyLengthBytes);
+                Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKey);
             }
             finally
             {
@@ -94,8 +93,8 @@
             }
         }
 
-        public static byte[] ScryptAnsi(SecureString password, byte[] salt, ulong n, uint r, uint p,
-            uint derivedKeyLengthBytes)
+        public static void ScryptAnsi(SecureString password, byte[] salt, ulong n, uint r, uint p,
+            byte[] derivedKey)
         {
             var passwordPtr = IntPtr.Zero;
 
@@ -103,7 +102,7 @@
             try
             {
                 passwordPtr = Marshal.SecureStringToGlobalAllocAnsi(password);
-                return Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKeyLengthBytes);
+                Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKey);
             }
             finally
             {

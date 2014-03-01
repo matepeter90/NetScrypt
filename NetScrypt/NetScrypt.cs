@@ -70,9 +70,11 @@ namespace BlackFox.Cryptography.NetScrypt
         /// <remarks>The encoding used is the system Unicode encoding (UTF-16)</remarks>
         public static byte[] DeriveKey(SecureString password, SaltWithParameters saltWithParameters)
         {
-            return LibScrypt.ScryptUnicode(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
+            var result = new byte[saltWithParameters.Parameters.HashLengthBytes];
+            LibScrypt.ScryptUnicode(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
                 saltWithParameters.Parameters.R, saltWithParameters.Parameters.P,
-                saltWithParameters.Parameters.HashLengthBytes);
+                result);
+            return result;
         }
 
         /// <summary>The 'raw' scrypt key-derivation function.</summary>
@@ -80,9 +82,11 @@ namespace BlackFox.Cryptography.NetScrypt
         /// <param name="saltWithParameters">The salt and parameters to use for the generation.</param>
         public static byte[] DeriveKey(byte[] password, SaltWithParameters saltWithParameters)
         {
-            return LibScrypt.Scrypt(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
+            var result = new byte[saltWithParameters.Parameters.HashLengthBytes];
+            LibScrypt.Scrypt(password, saltWithParameters.Salt, saltWithParameters.Parameters.N,
                 saltWithParameters.Parameters.R, saltWithParameters.Parameters.P,
-                saltWithParameters.Parameters.HashLengthBytes);
+                result);
+            return result;
         }
     }
 }
