@@ -1,4 +1,4 @@
-﻿namespace BlackFox.Cryptography.NetScrypt.Scrypt.ScryptCommandLine
+﻿namespace BlackFox.Cryptography.Scrypt.ScryptCommandLine
 {
     using CommandLine;
 

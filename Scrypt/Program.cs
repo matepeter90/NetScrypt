@@ -1,8 +1,8 @@
-﻿namespace BlackFox.Cryptography.NetScrypt.Scrypt
+﻿namespace BlackFox.Cryptography.Scrypt
 {
     using System;
     using System.IO;
-    using BlackFox.Cryptography.NetScrypt.Scrypt.ScryptCommandLine;
+    using BlackFox.Cryptography.Scrypt.ScryptCommandLine;
     using CommandLine;
     using CommandLine.Text;
 

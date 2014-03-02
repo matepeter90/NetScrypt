@@ -1,4 +1,4 @@
-namespace BlackFox.Cryptography.NetScrypt.Scrypt.Streams
+namespace BlackFox.Cryptography.Scrypt.Streams
 {
     using System;
     using System.IO;

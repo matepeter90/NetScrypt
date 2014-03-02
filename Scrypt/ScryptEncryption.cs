@@ -1,4 +1,4 @@
-﻿namespace BlackFox.Cryptography.NetScrypt.Scrypt
+﻿namespace BlackFox.Cryptography.Scrypt
 {
     using System;
     using System.IO;
@@ -6,8 +6,9 @@
     using System.Security;
     using System.Security.Cryptography;
     using System.Text;
+    using BlackFox.Cryptography.NetScrypt;
     using BlackFox.Cryptography.NetScrypt.Framework;
-    using BlackFox.Cryptography.NetScrypt.Scrypt.Streams;
+    using BlackFox.Cryptography.Scrypt.Streams;
 
     class ScryptEncryption
     {

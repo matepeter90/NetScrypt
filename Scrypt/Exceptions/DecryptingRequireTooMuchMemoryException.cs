@@ -1,4 +1,4 @@
-﻿namespace BlackFox.Cryptography.NetScrypt.Scrypt
+﻿namespace BlackFox.Cryptography.Scrypt
 {
     using System;
 

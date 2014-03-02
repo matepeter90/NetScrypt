@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace BlackFox.Cryptography.NetScrypt.Scrypt
+﻿namespace BlackFox.Cryptography.Scrypt
 {
+    using System;
     using System.Diagnostics;
     using BlackFox.Cryptography.NetScrypt.Framework;
 
