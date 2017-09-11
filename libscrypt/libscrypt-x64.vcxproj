@@ -55,6 +55,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -69,6 +70,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,14 +79,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="config.h" />
+    <ClInclude Include="cpusupport.h" />
     <ClInclude Include="crypto_scrypt.h" />
+    <ClInclude Include="crypto_scrypt_smix.h" />
+    <ClInclude Include="crypto_scrypt_smix_sse2.h" />
+    <ClInclude Include="insecure_memzero.h" />
+    <ClInclude Include="mman.h" />
     <ClInclude Include="scrypt_platform.h" />
     <ClInclude Include="sha256.h" />
     <ClInclude Include="sysendian.h" />
+    <ClInclude Include="warnp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crypto_scrypt-sse.c" />
+    <ClCompile Include="cpusupport_x86_aesni.c" />
+    <ClCompile Include="cpusupport_x86_sse2.c" />
+    <ClCompile Include="crypto_scrypt.c" />
+    <ClCompile Include="crypto_scrypt_smix.c" />
+    <ClCompile Include="crypto_scrypt_smix_sse2.c" />
+    <ClCompile Include="insecure_memzero.c" />
+    <ClCompile Include="mman.c" />
     <ClCompile Include="sha256.c" />
+    <ClCompile Include="warnp.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
