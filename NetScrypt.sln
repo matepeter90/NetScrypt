@@ -1,35 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libscrypt", "libscrypt\libscrypt.vcxproj", "{7B0F9FB2-C41A-4470-A481-044D68F4C266}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FFF6720C-EFB6-4AD6-9C0C-7ED100B9415C}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F360977E-34E7-4B39-9817-BD3BDCF50F39}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
-		NetScrypt.nuspec = NetScrypt.nuspec
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libscrypt-x64", "libscrypt\libscrypt-x64.vcxproj", "{3384C02A-70EF-4E8C-B188-C9CF2470796F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetScrypt", "NetScrypt\NetScrypt.csproj", "{BBCAF9F0-0071-44BB-82F4-2081F5E9EBBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetScrypt", "NetScrypt\NetScrypt.csproj", "{BBCAF9F0-0071-44BB-82F4-2081F5E9EBBC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3384C02A-70EF-4E8C-B188-C9CF2470796F} = {3384C02A-70EF-4E8C-B188-C9CF2470796F}
 		{7B0F9FB2-C41A-4470-A481-044D68F4C266} = {7B0F9FB2-C41A-4470-A481-044D68F4C266}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetScrypt.Tests", "NetScrypt.Tests\NetScrypt.Tests.csproj", "{4D35A557-DC23-4242-B948-0E38E45E9354}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrypt", "Scrypt\Scrypt.csproj", "{3000F8CA-664D-40F5-9296-E67477146D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetScrypt.Tests", "NetScrypt.Tests\NetScrypt.Tests.csproj", "{4D35A557-DC23-4242-B948-0E38E45E9354}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,20 +85,11 @@ Global
 		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Win32.ActiveCfg = Release|Any CPU
 		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|x64.ActiveCfg = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|Win32.ActiveCfg = Release|Any CPU
-		{3000F8CA-664D-40F5-9296-E67477146D91}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD2A6BAF-7AB0-4FAE-B45C-2EDD4770EAC5}
 	EndGlobalSection
 EndGlobal
