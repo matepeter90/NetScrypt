@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetScrypt", "NetScrypt\NetS
 		{7B0F9FB2-C41A-4470-A481-044D68F4C266} = {7B0F9FB2-C41A-4470-A481-044D68F4C266}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetScrypt.Tests", "NetScrypt.Tests\NetScrypt.Tests.csproj", "{4D35A557-DC23-4242-B948-0E38E45E9354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetScrypt.Tests", "NetScrypt.Tests\NetScrypt.Tests.csproj", "{DB486D51-F03F-43E7-B240-5AE81D965D1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,18 +73,22 @@ Global
 		{BBCAF9F0-0071-44BB-82F4-2081F5E9EBBC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BBCAF9F0-0071-44BB-82F4-2081F5E9EBBC}.Release|Win32.ActiveCfg = Release|Any CPU
 		{BBCAF9F0-0071-44BB-82F4-2081F5E9EBBC}.Release|x64.ActiveCfg = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|Win32.ActiveCfg = Release|Any CPU
-		{4D35A557-DC23-4242-B948-0E38E45E9354}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|Win32.Build.0 = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|Win32.Build.0 = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB486D51-F03F-43E7-B240-5AE81D965D1D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

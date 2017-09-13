@@ -1,13 +1,11 @@
-﻿namespace BlackFox.Cryptography.NetScrypt.Tests
+namespace BlackFox.Cryptography.NetScrypt.Tests
 {
     using System.Text;
-    using NFluent;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class TestVectors
     {
-        [Test]
+        [Fact]
         public void PassTestVectorA()
         {
             var vector = Encoding.ASCII.GetBytes("");
@@ -21,10 +19,10 @@
                 0xfc, 0xd0, 0x06, 0x9d, 0xed, 0x09, 0x48, 0xf8, 0x32, 0x6a, 0x75, 0x3a, 0x0f, 0xc8, 0x1f, 0x17,
                 0xe8, 0xd3, 0xe0, 0xfb, 0x2e, 0x0d, 0x36, 0x28, 0xcf, 0x35, 0xe2, 0x0c, 0x38, 0xd1, 0x89, 0x06
             };
-            Check.That(result).ContainsExactly(expected);
+            Assert.Equal(result, expected);
         }
 
-        [Test]
+        [Fact]
         public void PassTestVectorB()
         {
             var vector = Encoding.ASCII.GetBytes("password");
@@ -38,10 +36,10 @@
                 0x2e, 0xaf, 0x30, 0xd9, 0x2e, 0x22, 0xa3, 0x88, 0x6f, 0xf1, 0x09, 0x27, 0x9d, 0x98, 0x30, 0xda,
                 0xc7, 0x27, 0xaf, 0xb9, 0x4a, 0x83, 0xee, 0x6d, 0x83, 0x60, 0xcb, 0xdf, 0xa2, 0xcc, 0x06, 0x40
             };
-            Check.That(result).ContainsExactly(expected);
+            Assert.Equal(result, expected);
         }
 
-        [Test]
+        [Fact]
         public void PassTestVectorC()
         {
             var vector = Encoding.ASCII.GetBytes("pleaseletmein");
@@ -55,10 +53,10 @@
                 0xd5, 0x43, 0x29, 0x55, 0x61, 0x3f, 0x0f, 0xcf, 0x62, 0xd4, 0x97, 0x05, 0x24, 0x2a, 0x9a, 0xf9,
                 0xe6, 0x1e, 0x85, 0xdc, 0x0d, 0x65, 0x1e, 0x40, 0xdf, 0xcf, 0x01, 0x7b, 0x45, 0x57, 0x58, 0x87
             };
-            Check.That(result).ContainsExactly(expected);
+            Assert.Equal(result, expected);
         }
 
-        [Test]
+        [Fact]
         public void PassTestVectorD()
         {
             var vector = Encoding.ASCII.GetBytes("pleaseletmein");
