@@ -81,10 +81,9 @@
         {
             var passwordPtr = IntPtr.Zero;
 
-            RuntimeHelpers.PrepareConstrainedRegions();
             try
             {
-                passwordPtr = Marshal.SecureStringToGlobalAllocUnicode(password);
+                passwordPtr = SecureStringMarshal.SecureStringToGlobalAllocUnicode(password);
                 Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKey);
             }
             finally
@@ -98,10 +97,9 @@
         {
             var passwordPtr = IntPtr.Zero;
 
-            RuntimeHelpers.PrepareConstrainedRegions();
             try
             {
-                passwordPtr = Marshal.SecureStringToGlobalAllocAnsi(password);
+                passwordPtr = SecureStringMarshal.SecureStringToGlobalAllocAnsi(password);
                 Scrypt(passwordPtr, password.Length, salt, n, r, p, derivedKey);
             }
             finally

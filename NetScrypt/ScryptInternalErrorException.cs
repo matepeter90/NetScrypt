@@ -10,9 +10,5 @@
             : base("Internal error in crypto_scrypt")
         {
         }
-
-        protected ScryptInternalErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

@@ -6,17 +6,17 @@ namespace BlackFox.Cryptography.NetScrypt
     public static class SaltGenerator
     {
         [ThreadStatic]
-        private static RNGCryptoServiceProvider rngCryptoProvider;
+        private static RandomNumberGenerator rng;
 
         public static byte[] GenerateRandomSalt(uint bytes)
         {
-            if (rngCryptoProvider == null)
+            if (rng == null)
             {
-                rngCryptoProvider = new RNGCryptoServiceProvider();
+                rng = RandomNumberGenerator.Create();
             }
 
             var result = new byte[bytes];
-            rngCryptoProvider.GetBytes(result);
+            rng.GetBytes(result);
             return result;
         }
     }
