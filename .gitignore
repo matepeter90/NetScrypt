@@ -187,3 +187,5 @@ Desktop.ini
 $RECYCLE.BIN/
 
 *.ide/
+
+.vs/

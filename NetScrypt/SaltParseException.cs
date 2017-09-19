@@ -20,9 +20,5 @@
         public SaltParseException(string message, Exception innerException) : base(message, innerException)
         {
         }
-
-        protected SaltParseException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

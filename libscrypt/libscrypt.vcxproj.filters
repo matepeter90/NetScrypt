@@ -27,12 +27,54 @@
     <ClInclude Include="scrypt_platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="crypto_scrypt_smix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto_scrypt_smix_sse2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="insecure_memzero.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpusupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="warnp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crypto_scrypt-sse.c">
+    <ClCompile Include="sha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sha256.c">
+    <ClCompile Include="crypto_scrypt_smix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto_scrypt_smix_sse2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="insecure_memzero.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpusupport_x86_aesni.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpusupport_x86_sse2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="warnp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto_scrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mman.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
